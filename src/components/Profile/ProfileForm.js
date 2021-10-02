@@ -1,8 +1,10 @@
 import { useRef, useContext } from "react";
 import AuthContext from "../../store/auth-context";
+import { useHistory } from "react-router-dom";
 import classes from "./ProfileForm.module.css";
 
 const ProfileForm = () => {
+  const history = useHistory();
   const authCtx = useContext(AuthContext);
   const newPasswordInputRef = useRef();
 
@@ -22,11 +24,14 @@ const ProfileForm = () => {
         }),
         headers: { "Content-Type": "application/json" },
       }
-    );
+    ).then((res) => {
+      console.log("Password Change Sucess");
+      history.replace("/");
+    });
   };
 
   return (
-    <form className={classes.form}>
+    <form onSubmit={submitHandler} className={classes.form}>
       <div className={classes.control}>
         <label htmlFor="new-password">New Password</label>
         <input
